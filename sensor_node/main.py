@@ -25,7 +25,7 @@ imgFile = open("image").read()
 imgFile64 = ubinascii.b2a_base64(imgFile)
 
 
-lora = LoRa(mode=LoRa.LORA, frequency=868300000, bandwidth=LoRa.BW_125KHZ, tx_power=14, sf=7)
+lora = LoRa(mode=LoRa.LORA, frequency=868300000, bandwidth=LoRa.BW_500KHZ, tx_power=14, sf=7)
 s = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
 s.setblocking(False)
 
@@ -71,7 +71,7 @@ while True:
         print("Start sending sensor value")
         # s.setblocking(True)
         print(lora.stats())
-        s.send("temp:xx.xx, humid: xx.xx, motion: 0, infrared: 0, ultrasonic: xxx.xx, battery: xxx")
+        s.send("temp:xx.xx, humid: xx.xx, motion: xxxx, infrared: xxxx, ultrasonic: xxx.xx, battery: xxx")
         # s.setblocking(False)
         print("Stop sending sensor value")
     elif recv_data == b'002':
@@ -89,15 +89,15 @@ while True:
         for i in range(0, slot_n-1):
             print("sending slot {}".format(i))
             s.send("{},{}".format(i,imgFile64[last_slot : last_slot+246]))
-            time.sleep(0.4)            
-            print("finish sending slot {}".format(i))            
+            time.sleep(0.1)
+            print("finish sending slot {}".format(i))
             last_slot = last_slot + 246
         time.sleep(3)
         s.send(b'end')
         print("conversation end")
-            
+
     else:
-        pass   
+        pass
     # utime.sleep_ms(1000)
     # print("*******************************************")
     # print("Temp: {}".format(readTemp()))

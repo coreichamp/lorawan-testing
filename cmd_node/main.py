@@ -9,7 +9,7 @@ from machine import Pin
 
 pycom.heartbeat(False)
 pycom.rgbled(0x000000)
-lora = LoRa(mode=LoRa.LORA, frequency=868300000, bandwidth=LoRa.BW_125KHZ, tx_power=14, sf=7)
+lora = LoRa(mode=LoRa.LORA, frequency=868300000, bandwidth=LoRa.BW_500KHZ, tx_power=14, sf=7)
 s = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
 s.setblocking(False)
 
@@ -30,7 +30,7 @@ def req_data():
 			stop_time = utime.ticks_us()
 			print("stop conversation, tick: {}".format(stop_time))
 			print("used time: {}".format(utime.ticks_diff(start_time, stop_time)))
-			print(recv_data)		
+			print(recv_data)
 			break
 		# time.sleep(0.01)
 
@@ -47,19 +47,18 @@ def req_data_with_img():
 	time.sleep(1)
 	# print("reciving..")
 	while True:
-		recv_data = s.recv(255)		
+		recv_data = s.recv(255)
 		if recv_data == b'end':
 			stop_time = utime.ticks_us()
 			print("stop conversation")
 			used_time = utime.ticks_diff(start_time, stop_time)
-			print("st")
 			print("start_time: {}, stop_time: {}, used_time: {}".format(start_time, stop_time, used_time))
 			break
 		elif len(recv_data) > 0:
 			print(recv_data)
 
-		
-		
+
+
 	# s.setblocking(False)
 	# if len(recv_data) > 0:
 	# 	stop_time = utime.ticks_us()
@@ -91,5 +90,3 @@ req_data_with_img()
 # 	s.send(data[0:200+x])
 # 	s.setblocking(False)
 # 	print("End Sending.")	
-
-
